@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07111f"><meta name="description" content="CashIOL payments and mobile loading platform">
+<title>CashIOL — Payments & Loading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="app-shell">
+<aside class="sidebar">
+<a class="brand" href="#"><span class="brand-mark">C</span><span>Cash<span>IOL</span></span></a>
+<nav>
+<button class="nav-item active" data-view="dashboard">Overview</button>
+<button class="nav-item" data-view="cash-in">Cash In</button>
+<button class="nav-item" data-view="cash-out">Cash Out</button>
+<button class="nav-item" data-view="load">Mobile Load</button>
+<button class="nav-item" data-view="transactions">Transactions</button>
+</nav>
+<div class="sidebar-bottom"><div class="provider-card"><span class="status-dot"></span><div><strong>Provider status</strong><small>Sandbox / setup required</small></div></div></div>
+</aside>
+<main class="main">
+<header class="topbar"><div><p class="eyebrow">CashIOL platform</p><h1 id="page-title">Business overview</h1></div><div class="top-actions"><button class="icon-button">●</button><div class="profile"><span class="avatar">JO</span><span>Admin</span></div></div></header>
+
+<section id="dashboard-view" class="view active">
+<div class="hero"><div><p class="eyebrow">Today</p><h2>Move money and load faster.</h2><p>One workspace for your cash-in, cash-out and mobile loading operations.</p></div><div class="hero-badge">Provider integration ready</div></div>
+<div class="stats-grid">
+<article class="stat-card"><span>Available operating balance</span><strong>₱0.00</strong><small>Connect your approved provider</small></article>
+<article class="stat-card"><span>Today's transactions</span><strong>0</strong><small>No live transactions yet</small></article>
+<article class="stat-card"><span>Successful today</span><strong>0</strong><small>Awaiting provider setup</small></article>
+<article class="stat-card"><span>Pending</span><strong>0</strong><small>Nothing pending</small></article>
+</div>
+<div class="grid-2">
+<section class="panel"><div class="panel-heading"><div><p class="eyebrow">Quick actions</p><h3>Start a transaction</h3></div></div>
+<div class="action-grid">
+<button class="action-card" data-view="cash-in"><span class="action-icon">↓</span><strong>Cash In</strong><small>Credit a customer's GCash wallet through an approved outlet flow.</small></button>
+<button class="action-card" data-view="cash-out"><span class="action-icon">↑</span><strong>Cash Out</strong><small>Process a verified customer withdrawal.</small></button>
+<button class="action-card" data-view="load"><span class="action-icon">＋</span><strong>Buy Load</strong><small>Send mobile load to Globe, Smart or DITO.</small></button>
+</div></section>
+<section class="panel"><div class="panel-heading"><div><p class="eyebrow">Compliance first</p><h3>Before going live</h3></div></div>
+<ul class="check-list"><li>Get approved provider/API access</li><li>Keep provider secrets on the backend</li><li>Implement webhook verification and idempotency</li><li>Complete business, privacy and compliance requirements</li></ul></section>
+</div>
+</section>
+
+<section id="cash-in-view" class="view"><div class="section-intro"><p class="eyebrow">GCash outlet flow</p><h2>Cash In</h2><p>Record a cash-in request. Live fund movement remains disabled until an approved provider is connected.</p></div>
+<form class="transaction-form" data-type="cash-in"><label>Customer GCash mobile number<input name="mobile" inputmode="numeric" placeholder="09XXXXXXXXX" maxlength="11"></label><label>Cash-in amount<input name="amount" type="number" min="10" step="1" placeholder="500"></label><div class="fee-box"><span>Service fee</span><strong>Provider-configured</strong></div><button class="primary" type="submit">Create cash-in request</button></form></section>
+
+<section id="cash-out-view" class="view"><div class="section-intro"><p class="eyebrow">Verified withdrawal</p><h2>Cash Out</h2><p>Use an approved GCash outlet/payout workflow. Do not collect customer PINs or OTPs.</p></div>
+<form class="transaction-form" data-type="cash-out"><label>Customer GCash mobile number<input name="mobile" inputmode="numeric" placeholder="09XXXXXXXXX" maxlength="11"></label><label>Cash-out amount<input name="amount" type="number" min="100" step="1" placeholder="500"></label><label>ID/reference verification<input name="verification" placeholder="Reference or verified ID record"></label><div class="fee-box"><span>Service fee</span><strong>Provider-configured</strong></div><button class="primary" type="submit">Create cash-out request</button></form></section>
+
+<section id="load-view" class="view"><div class="section-intro"><p class="eyebrow">Mobile services</p><h2>Buy Mobile Load</h2><p>Products below are demo entries until a real loading provider is connected.</p></div>
+<form class="transaction-form" data-type="load"><label>Mobile number<input name="mobile" inputmode="numeric" placeholder="09XXXXXXXXX" maxlength="11"></label><label>Network<select name="productId"><option value="globe-100">Globe — ₱100 Regular Load</option><option value="smart-100">Smart — ₱100 Regular Load</option><option value="dito-100">DITO — ₱100 Regular Load</option></select></label><label>Amount<input name="amount" type="number" min="1" step="1" value="100"></label><button class="primary" type="submit">Create load request</button></form></section>
+
+<section id="transactions-view" class="view"><div class="section-intro"><p class="eyebrow">Ledger</p><h2>Transactions</h2><p>Recent requests created in this browser session.</p></div><div class="panel table-panel"><table><thead><tr><th>Reference</th><th>Type</th><th>Amount</th><th>Status</th><th>Time</th></tr></thead><tbody id="transaction-list"><tr><td colspan="5" class="empty">No transactions yet.</td></tr></tbody></table></div></section>
+</main></div><div id="toast" class="toast"></div><script src="/app.js"></script>
+</body></html>
