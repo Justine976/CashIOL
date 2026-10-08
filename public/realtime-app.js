@@ -6,6 +6,19 @@ const ADMIN_PIN = "123456";
 
 const apiUrl = (path) => `${API_BASE}${path}`;
 
+async function apiJson(url, options = {}) {
+  const response = await fetch(url, options);
+  const text = await response.text();
+  let data;
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch (_error) {
+    throw new Error(`CashIOL API returned non-JSON (${response.status}). Start the CashIOL Node server and open the app from that server, not directly from a static/GitHub Pages URL.`);
+  }
+  if (!response.ok) throw new Error(data.error || `API request failed (${response.status}).`);
+  return data;
+}
+
 function showScreen(name, options = {}) {
   screens.forEach((screen) => {
     const element = document.getElementById(`${screen}-screen`);
@@ -31,7 +44,8 @@ function toast(message) {
   if (!element) return;
   element.textContent = message;
   element.classList.add("show");
-  setTimeout(() => element.classList.remove("show"), 3200);
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => element.classList.remove("show"), 5000);
 }
 
 function peso(value) {
@@ -57,13 +71,14 @@ function renderAdmin() {
 
 async function loadTransactions() {
   try {
-    const response = await fetch(apiUrl("/api/transactions"));
-    if (!response.ok) throw new Error("Realtime server unavailable.");
-    const data = await response.json();
+    const data = await apiJson(apiUrl("/api/transactions"));
     transactions.clear();
     for (const t of data.transactions || []) transactions.set(t.id, t);
     renderAdmin();
-  } catch (error) { console.error(error); }
+  } catch (error) {
+    console.error(error);
+    toast(error.message || "Unable to connect to CashIOL API.");
+  }
 }
 
 function connectRealtime() {
@@ -85,9 +100,7 @@ function connectRealtime() {
 
 async function handleAdminAction(action, id) {
   try {
-    const response = await fetch(apiUrl(`/api/transactions/${encodeURIComponent(id)}`), { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action }) });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Unable to update transaction.");
+    const data = await apiJson(apiUrl(`/api/transactions/${encodeURIComponent(id)}`), { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action }) });
     transactions.set(data.transaction.id, data.transaction);
     renderAdmin();
     if (action === "approve") {
@@ -107,16 +120,15 @@ async function submitKioskForm(form) {
   if (!/^09\d{9}$/.test(String(data.mobile || ""))) return toast("Enter a valid Philippine mobile number.");
 
   const button = form.querySelector('button[type="submit"]');
+  const originalText = button?.innerHTML;
   if (button) { button.disabled = true; button.textContent = "Processing…"; }
 
   try {
-    const response = await fetch(apiUrl("/api/transactions"), {
+    const result = await apiJson(apiUrl("/api/transactions"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ type, amount, mobile: data.mobile || null, productId: data.productId || null, network: data.network || null })
     });
-    const result = await response.json();
-    if (!response.ok) throw new Error(result.error || "Unable to create transaction.");
 
     const t = result.transaction;
     transactions.set(t.id, t);
@@ -137,7 +149,7 @@ async function submitKioskForm(form) {
     console.error(error);
     toast(error.message || "Unable to create transaction.");
   } finally {
-    if (button) { button.disabled = false; button.textContent = type === "cash-in" ? "Continue to admin verification →" : "Continue →"; }
+    if (button) { button.disabled = false; button.innerHTML = originalText || (type === "cash-in" ? "Continue to admin verification <span>→</span>" : "Continue <span>→</span>"); }
   }
 }
 
