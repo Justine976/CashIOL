@@ -6,13 +6,26 @@ const ADMIN_PIN = "123456";
 
 const apiUrl = (path) => `${API_BASE}${path}`;
 
-function showScreen(name) {
+function showScreen(name, options = {}) {
   screens.forEach((screen) => {
     const element = document.getElementById(`${screen}-screen`);
     if (element) element.classList.toggle("active", screen === name);
   });
+
+  if (!options.skipSave) {
+    localStorage.setItem("cashiol_current_screen", name);
+  }
+
   resetIdle();
-  if (name === "admin") renderAdmin();
+  if (name === "admin") {
+    renderAdmin();
+    loadTransactions();
+  }
+}
+
+function getSavedScreen() {
+  const saved = localStorage.getItem("cashiol_current_screen");
+  return saved && screens.includes(saved) ? saved : "home";
 }
 
 function resetIdle() {
@@ -190,4 +203,4 @@ document.querySelectorAll(".kiosk-form").forEach((form) => {
 document.getElementById("machine-id").textContent = localStorage.getItem("cashiol_machine_id") || "CASHIOL-001";
 loadTransactions();
 connectRealtime();
-showScreen("home");
+showScreen(getSavedScreen(), { skipSave: true });
