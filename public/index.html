@@ -36,11 +36,11 @@
 <section class="panel"><div class="panel-heading"><div><p class="eyebrow">Quick actions</p><h3>Start a transaction</h3></div></div>
 <div class="action-grid">
 <button class="action-card" data-view="cash-in"><span class="action-icon">↓</span><strong>Cash In</strong><small>Credit a customer's GCash wallet through an approved outlet flow.</small></button>
-<button class="action-card" data-view="cash-out"><span class="action-icon">↑</span><strong>Cash Out</strong><small>Process a verified customer withdrawal.</small></button>
 <button class="action-card" data-view="load"><span class="action-icon">＋</span><strong>Buy Load</strong><small>Send mobile load to Globe, Smart or DITO.</small></button>
 </div></section>
 <section class="panel"><div class="panel-heading"><div><p class="eyebrow">Compliance first</p><h3>Before going live</h3></div></div>
-<ul class="check-list"><li>Get approved provider/API access</li><li>Keep provider secrets on the backend</li><li>Implement webhook verification and idempotency</li><li>Complete business, privacy and compliance requirements</li></ul></section>
+<ul class="check-list"><li>Get approved provider/API access</li><li>Keep provider secrets on the backend</li><li>Implement webhook verification and idempotency</li><li>Complete business, privacy and compliance requirements</li></ul>
+</section>
 </div>
 </section>
 
@@ -54,5 +54,5 @@
 <form class="transaction-form" data-type="load"><label>Mobile number<input name="mobile" inputmode="numeric" placeholder="09XXXXXXXXX" maxlength="11"></label><label>Network<select name="productId"><option value="globe-100">Globe — ₱100 Regular Load</option><option value="smart-100">Smart — ₱100 Regular Load</option><option value="dito-100">DITO — ₱100 Regular Load</option></select></label><label>Amount<input name="amount" type="number" min="1" step="1" value="100"></label><button class="primary" type="submit">Create load request</button></form></section>
 
 <section id="transactions-view" class="view"><div class="section-intro"><p class="eyebrow">Ledger</p><h2>Transactions</h2><p>Recent requests created in this browser session.</p></div><div class="panel table-panel"><table><thead><tr><th>Reference</th><th>Type</th><th>Amount</th><th>Status</th><th>Time</th></tr></thead><tbody id="transaction-list"><tr><td colspan="5" class="empty">No transactions yet.</td></tr></tbody></table></div></section>
-</main></div><div id="toast" class="toast"></div><script src="/app.js"></script>
+</main></div><div id="toast" class="toast"></div><script src="/app.js?v=3"></script>
 </body></html>
